@@ -1,2 +1,3 @@
 Django
 watchdog
+beautifulsoup4

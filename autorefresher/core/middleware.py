@@ -1,25 +1,51 @@
+from django.conf import settings
+
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+
+from bs4 import BeautifulSoup
+
 import sys
 import time
 import logging
-from watchdog.observers import Observer
-from watchdog.events import LoggingEventHandler
-from django.conf import settings
+
+from .models import LastChange
+
+
+class RefreshEventHandler(FileSystemEventHandler):
+
+    def on_any_event(self, event):
+        new_update = LastChange()
+        new_update.refreshed = False
+        new_update.save()
 
 
 class AutoRefresher(object):
+
     def watcher(self):
-        logging.basicConfig(level=logging.INFO,
-                            format='[%(asctime)s] %(message)s',
-                            datefmt='%d/%b/%Y %H:%M:%S')
-        path = settings.SITE_ROOT
-        event_handler = LoggingEventHandler()
         observer = Observer()
+
+        path = settings.SITE_ROOT
+        event_handler = RefreshEventHandler()
         observer.schedule(event_handler, path, recursive=True)
+
         observer.start()
 
     def process_response(self, request, response):
-        return response
+        if settings.DEBUG:
+            try:
+                soup = BeautifulSoup(response.content)
+
+                # Append refresher
+                script_refresher = soup.new_tag('script', src='/static/autorefresher/js/refresher.js')
+                soup.head.append(script_refresher)
+
+                response.content = soup.prettify()
+            except:
+                pass
+            return response
 
     def __init__(self):
-        self.watcher()
+        if settings.DEBUG:
+            self.watcher()
 
