@@ -10,8 +10,19 @@ production!
  1. Install fresh by running `pip install django-fresh`.
  2. In `settings.py` add `fresh` to `INSTALLED_APPS`.
  3. In `settings.py` add `fresh.middleware.FreshMiddleware` to `MIDDLEWARE_CLASSES`.
- 4. In `urls.py` add `url(r'', include('fresh.urls'))` to `urlpatterns`.
+ 4. In `settings.py` have `SITE_ROOT` variable set to the absolute path of your projects files.
+ 5. In `urls.py` add `url(r'', include('fresh.urls'))` to `urlpatterns`.
 
+### SITE_ROOT Example
+
+This will dynamically grab the location of your settings file and make it your
+site root, django-fresh will recursively watch everything in the settings file's
+folder.
+
+    SITE_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+**Note:** Be sure you `import os` before using the above code or you'll get an
+error!
 
 ## How It Works
 
@@ -21,7 +32,7 @@ changed. If django-fresh sees that you modified a file it will tell the next
 polling to refresh the page.
 
 
-## Note
+## Notice
 
 django-fresh checks to see if `debug` is `True`, if it is `False` it doesn't do
 anything to prevent you from accidently including it in production.
