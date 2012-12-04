@@ -46,7 +46,7 @@ You have two customizable choices:
         '.py',
         '.html',
         '.js',
-        '.html',
+        '.css',
     ]
 
 ### `FRESH_IGNORED_PAGES` Defaults

@@ -21,7 +21,7 @@ class RefreshEventHandler(FileSystemEventHandler):
             '.py',
             '.html',
             '.js',
-            '.html',
+            '.css',
         ])
     
         for extension in ACCEPTED_EXTENSIONS:
