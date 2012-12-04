@@ -4,8 +4,8 @@ function checkRefresh() {
     req.open('GET', '/fresh/', false);
     req.send();
 
-    var refresher = JSON.parse(req.responseText).refresher;
-    if (refresher) location.reload();
+    var fresh = JSON.parse(req.responseText).fresh;
+    if (fresh) location.reload();
 
     doPoll();
 }
