@@ -5,6 +5,14 @@ files in your project. Very useful for development, not intended for
 production!
 
 
+## How It Works
+
+django-fresh injects a small piece of JavaScript into each of your HTML pages
+which will then make the page poll your Django app checking if files were
+changed. If django-fresh sees that you modified a file it will tell the next
+polling to refresh the page.
+
+
 ## Setup
 
  1. Install fresh by running `pip install django-fresh`.
@@ -13,7 +21,7 @@ production!
  4. In `settings.py` have `SITE_ROOT` variable set to the absolute path of your projects files.
  5. In `urls.py` add `url(r'', include('fresh.urls'))` to `urlpatterns`.
 
-### SITE_ROOT Example
+### `SITE_ROOT` Example
 
 This will dynamically grab the location of your settings file and make it your
 site root, django-fresh will recursively watch everything in the settings file's
@@ -24,12 +32,29 @@ folder.
 **Note:** Be sure you `import os` before using the above code or you'll get an
 error!
 
-## How It Works
 
-django-fresh injects a small piece of JavaScript into each of your HTML pages
-which will then make the page poll your Django app checking if files were
-changed. If django-fresh sees that you modified a file it will tell the next
-polling to refresh the page.
+## Optional Custom Settings
+
+You have two customizable choices:
+
+ 1. `FRESH_ACCEPTED_EXTENSIONS` is an array that is checked when files are updated, if an extension is not in the list it won't trigger a refresh.
+ 2. `FRESH_IGNORED_PAGES` is an array that is checked before injecting the refresh code, if page in list it won't have the code injected. 
+
+### `FRESH_ACCEPTED_EXTENSIONS` Defaults
+
+    FRESH_ACCEPTED_EXTENSIONS = [
+        '.py',
+        '.html',
+        '.js',
+        '.html',
+    ]
+
+### `FRESH_IGNORED_PAGES` Defaults
+
+    FRESH_IGNORED_PAGES = [
+        '/admin/',
+        '/admin_keywords_submit/',
+    ]
 
 
 ## Notice

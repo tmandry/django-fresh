@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='django-fresh',
-    version='1.0.2',
+    version='1.0.3',
     license='Simplified BSD',
 
     install_requires = [

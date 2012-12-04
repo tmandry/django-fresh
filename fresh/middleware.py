@@ -17,15 +17,14 @@ class RefreshEventHandler(FileSystemEventHandler):
 
     def on_any_event(self, event):
         global fresh
-    
-        accepted_extensions = [
+        ACCEPTED_EXTENSIONS = getattr(settings, 'FRESH_ACCEPTED_EXTENSIONS', [
             '.py',
             '.html',
             '.js',
             '.html',
-        ]
+        ])
     
-        for extension in accepted_extensions:
+        for extension in ACCEPTED_EXTENSIONS:
             if event.src_path.lower().endswith(extension):
                 fresh = True
 
@@ -36,22 +35,33 @@ class FreshMiddleware(object):
         if not settings.DEBUG:
             return response
 
-        mimetype = response._headers['content-type'][1]
         global fresh
+        mimetype = response._headers['content-type'][1]
+        IGNORED_PAGES = getattr(settings, 'FRESH_IGNORED_PAGES', [
+            '/admin/',
+            '/admin_keywords_submit/',
+        ])
+        ignored = False
 
-        if mimetype == 'application/json':
-            items = json.loads(response.content)
-            if fresh and items.get('fresh') != None:
-                fresh = False
-                items['fresh'] = True
-                response.content = json.dumps(items)
-        elif mimetype == 'text/html; charset=utf-8':
-            soup = BeautifulSoup(response.content)
-            script_fresh = soup.new_tag('script', src='/static/fresh/js/refresher.js')
-            soup.head.append(script_fresh)
-            response.content = soup.prettify()
+        for ignored_page in IGNORED_PAGES:
+            if request.path.lower().startswith(ignored_page):
+                ignored = True
+
+        if not ignored:
+            if mimetype == 'application/json':
+                items = json.loads(response.content)
+                if fresh and items.get('fresh') != None:
+                    fresh = False
+                    items['fresh'] = True
+                    response.content = json.dumps(items)
+            elif mimetype == 'text/html; charset=utf-8':
+                soup = BeautifulSoup(response.content)
+                script_fresh = soup.new_tag('script', src='/static/fresh/js/refresher.js')
+                soup.head.append(script_fresh)
+                response.content = soup.prettify()
 
         return response
+
 
     def watcher(self):
         observer = Observer()
