@@ -17,7 +17,17 @@ class RefreshEventHandler(FileSystemEventHandler):
 
     def on_any_event(self, event):
         global fresh
-        fresh = True
+    
+        accepted_extensions = [
+            '.py',
+            '.html',
+            '.js',
+            '.html',
+        ]
+    
+        for extension in accepted_extensions:
+            if event.src_path.lower().endswith(extension):
+                fresh = True
 
 
 class FreshMiddleware(object):
