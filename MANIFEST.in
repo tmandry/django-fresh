@@ -1,2 +1,3 @@
 include README.md
-recursive-include fresh *.py *.js
+recursive-include fresh *
+recursive-exclude fresh *.py[co]
