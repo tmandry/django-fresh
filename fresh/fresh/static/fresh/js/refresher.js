@@ -1,11 +1,11 @@
 function checkRefresh() {
     var req = new XMLHttpRequest();
 
-    req.open('GET', '/refresher/', false);
+    req.open('GET', '/fresh/', false);
     req.send();
 
-    var refresh = JSON.parse(req.responseText).refresh;
-    if (refresh) location.reload();
+    var refresher = JSON.parse(req.responseText).refresher;
+    if (refresher) location.reload();
 
     doPoll();
 }
@@ -13,7 +13,7 @@ function checkRefresh() {
 function doPoll() {
     setTimeout(function() {
         checkRefresh();
-    }, 3000);
+    }, 1000);
 }
 
 doPoll();
