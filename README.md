@@ -1,25 +1,30 @@
 # django-fresh
 
-django-fresh will auto-refresh your browser whenever there is an update to any
-of the files in your project. Very useful for development, not intended for
+django-fresh will auto-refresh your browser whenever you update to any of the
+files in your project. Very useful for development, not intended for
 production!
 
 
 ## Setup
 
-    pip install django-fresh
+ 1. Install fresh by running `pip install django-fresh`.
+ 2. In `settings.py` add `fresh` to `INSTALLED_APPS`.
+ 3. In `settings.py` add `fresh.middleware.FreshMiddleware` to `MIDDLEWARE_CLASSES`.
+ 4. In `urls.py` add `url(r'', include('fresh.urls'))` to `urlpatterns`.
 
-Go to your projects `settings.py`, add `fresh` to your `INSTALLED_APPS` and add
-to `MIDDLEWARE_CLASSES` `fresh.middleware.Fresh`. Then open up `urls.py` and
-add `url(r'', include('fresh.urls'))` to your `urlpatterns`.
+
+## How It Works
+
+django-fresh injects a small piece of JavaScript into each of your HTML pages
+which will then make the page poll your Django app checking if files were
+changed. If django-fresh sees that you modified a file it will tell the next
+polling to refresh the page.
 
 
-## Notice
+## Note
 
 django-fresh checks to see if `debug` is `True`, if it is `False` it doesn't do
-anything so it is safe to add it to a production `settings.py`. However, I do
-recommend following good Django practices and having separate development and
-production settings.
+anything to prevent you from accidently including it in production.
 
 
 ## License (Simplified BSD)
