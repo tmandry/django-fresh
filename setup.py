@@ -1,5 +1,4 @@
 from distutils.core import setup
-from setuptools import find_packages
 
 
 setup(
@@ -7,7 +6,7 @@ setup(
     version='1.0.0',
     author='Isaac Bythewood',
     author_email='isaac@bythewood.me',
-    packages=find_packages(),
+    packages=['fresh'],
     url='http://github.com/overshard/django-fresh',
     license='Simplified BSD',
     description='Auto-refreshes your browser after updating files in your' + \
@@ -15,4 +14,5 @@ setup(
     long_description=open('README.md').read(),
     zip_safe=False,
     install_requires=['Django', 'watchdog', 'beautifulsoup4'],
+    include_package_data=True
 )
