@@ -1,3 +1,4 @@
 *.pyc
 /dist/
+/django_fresh.egg-info/
 /MANIFEST

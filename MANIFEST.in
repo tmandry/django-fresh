@@ -1,3 +1,2 @@
 include README.md
-recursive-include fresh *.py
-recursive-include fresh *.js
+recursive-include fresh/static *
