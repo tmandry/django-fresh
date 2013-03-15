@@ -56,7 +56,8 @@ class FreshMiddleware(object):
                     response.content = json.dumps(items)
             elif mimetype == 'text/html; charset=utf-8':
                 soup = BeautifulSoup(response.content)
-                script_fresh = soup.new_tag('script', src='/static/fresh/js/refresher.js')
+                url = settings.STATIC_URL + 'fresh/js/refresher.js'
+                script_fresh = soup.new_tag('script', src=url)
                 soup.head.append(script_fresh)
                 response.content = soup.prettify()
 
